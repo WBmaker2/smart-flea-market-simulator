@@ -34,7 +34,7 @@ export function ProductGrid({ products, onAddProduct }: ProductGridProps) {
             type="button"
             className="product-card"
             onClick={() => onAddProduct(product)}
-            aria-label={`${product.name} ${formatWon(product.price)} 담기`}
+            aria-label={`${product.name} ${product.category} ${product.needLevel} ${formatWon(product.price)} 담기`}
           >
             <span className={`product-visual ${product.visual}`} aria-hidden="true">
               {visualLabels[product.visual].slice(0, 1)}

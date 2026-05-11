@@ -12,8 +12,10 @@ describe('Smart Flea Market Simulator', () => {
     expect(screen.getByRole('heading', { name: '왁자지껄 우리 반 알뜰 시장' })).toBeInTheDocument();
     expect(screen.getByLabelText('남은 예산')).toHaveTextContent('10,000원');
 
-    await user.click(screen.getByRole('button', { name: /색연필 세트 1,500원 담기/ }));
-    await user.click(screen.getByRole('button', { name: /공책 세트 1,200원 담기/ }));
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ }));
 
     expect(screen.getByLabelText('쓴 돈')).toHaveTextContent('2,700원');
     expect(screen.getByLabelText('남은 예산')).toHaveTextContent('7,300원');
@@ -25,11 +27,12 @@ describe('Smart Flea Market Simulator', () => {
     render(<App />);
 
     for (let index = 0; index < 3; index += 1) {
-      await user.click(screen.getByRole('button', { name: /미니 블록 3,000원 담기/ }));
+      await user.click(screen.getByRole('button', { name: /미니 블록 놀이 선택 3,000원 담기/ }));
     }
-    await user.click(screen.getByRole('button', { name: /물병 2,800원 담기/ }));
+    await user.click(screen.getByRole('button', { name: /물병 생활 필수 2,800원 담기/ }));
 
     expect(screen.getByRole('alert')).toHaveTextContent('예산이 부족해요! 합리적 소비를 위해 다시 고민해 볼까요?');
+    expect(screen.getByRole('status')).not.toHaveTextContent('예산이 부족해요! 합리적 소비를 위해 다시 고민해 볼까요?');
     expect(screen.getByLabelText('남은 예산')).toHaveTextContent('1,000원');
     const cart = screen.getByRole('complementary', { name: '장바구니' });
     expect(within(cart).getByText('미니 블록')).toBeInTheDocument();
@@ -40,12 +43,19 @@ describe('Smart Flea Market Simulator', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /색연필 세트 1,500원 담기/ }));
-    await user.click(screen.getByRole('button', { name: /색연필 세트 1,500원 담기/ }));
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
     await user.click(screen.getByRole('button', { name: /색연필 세트 한 개 빼기/ }));
 
     const cart = screen.getByRole('complementary', { name: '장바구니' });
-    expect(within(cart).getAllByText('1개').length).toBeGreaterThan(0);
+    const pencilRow = within(cart).getByText('색연필 세트').closest('li');
+    expect(pencilRow).toBeTruthy();
+    expect(within(pencilRow as HTMLElement).getByText('1,500원 x 1')).toBeInTheDocument();
+    expect(within(pencilRow as HTMLElement).getByText('1,500원')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '장바구니 비우기' }));
 
@@ -58,8 +68,10 @@ describe('Smart Flea Market Simulator', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole('button', { name: /색연필 세트 1,500원 담기/ }));
-    await user.click(screen.getByRole('button', { name: /쌀과자 800원 담기/ }));
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(screen.getByRole('button', { name: /쌀과자 간식 선택 800원 담기/ }));
     await user.click(screen.getByRole('button', { name: '결제하기' }));
 
     const reflection = screen.getByRole('region', { name: '소비 선택 돌아보기' });

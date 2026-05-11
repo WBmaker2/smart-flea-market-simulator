@@ -24,7 +24,7 @@ export default function App() {
   function handleAddProduct(product: Product) {
     const result = addProductToCart(cartLines, product, STARTING_BUDGET);
     setCartLines(result.lines);
-    setNotice(result.message);
+    setNotice(result.accepted ? result.message : '예산 안에서 다시 골라 보세요.');
     setWarning(result.accepted ? '' : result.message);
     setCheckedOut(false);
   }
