@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="알뜰 시장 장바구니">
+  <rect width="64" height="64" rx="12" fill="#007580" />
+  <path d="M18 27h28l-4 18H22z" fill="#fffdf8" stroke="#18212f" stroke-width="3" stroke-linejoin="round" />
+  <path d="M24 27c0-7 4-12 8-12s8 5 8 12" fill="none" stroke="#ffd166" stroke-width="4" stroke-linecap="round" />
+  <circle cx="25" cy="49" r="3" fill="#ffd166" />
+  <circle cx="39" cy="49" r="3" fill="#ffd166" />
+</svg>
