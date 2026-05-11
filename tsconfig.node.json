@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
+    "outDir": "node_modules/.cache/vite-typescript",
     "strict": true
   },
   "include": ["vite.config.ts"]
