@@ -195,7 +195,7 @@ h2 {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 12px;
 }
 
@@ -231,25 +231,25 @@ h2 {
   font-weight: 900;
 }
 
-.pencil,
-.note,
-.eraser {
+.product-visual.pencil,
+.product-visual.note,
+.product-visual.eraser {
   background: #ffd166;
 }
 
-.snack,
-.juice {
+.product-visual.snack,
+.product-visual.juice {
   background: #ef767a;
 }
 
-.blocks,
-.yo-yo,
-.sticker {
+.product-visual.blocks,
+.product-visual.yo-yo,
+.product-visual.sticker {
   background: #8ecae6;
 }
 
-.bag,
-.water {
+.product-visual.bag,
+.product-visual.water {
   background: #95d5b2;
 }
 
@@ -472,7 +472,7 @@ button:disabled {
     grid-column: 1;
   }
 
-  .icon-button {
+  .cart-line .icon-button {
     grid-column: 2;
     grid-row: 1 / span 2;
   }
