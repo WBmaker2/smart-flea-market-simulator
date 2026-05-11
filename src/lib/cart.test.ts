@@ -79,4 +79,26 @@ describe('cart math', () => {
     expect(removed).toEqual([{ product: notebook, quantity: 1, lineTotal: 1200 }]);
     expect(clearCart(removed)).toEqual([]);
   });
+
+  it('removes a line when only one quantity is in the cart', () => {
+    const first = addProductToCart([], notebook, 10000);
+    const removed = removeOneFromCart(first.lines, notebook.id);
+
+    expect(removed).toEqual([]);
+  });
+
+  it('normalizes stale lineTotal from input before calculating', () => {
+    const staleLine = { product: notebook, quantity: 2, lineTotal: 9999 };
+    const summary = getCartSummary([staleLine], 10000);
+
+    expect(summary.lines).toEqual([{ product: notebook, quantity: 2, lineTotal: 2400 }]);
+    expect(summary.total).toBe(2400);
+
+    const rejected = addProductToCart([staleLine], blocks, 2500);
+    expect(rejected.accepted).toBe(false);
+    expect(rejected.lines).toEqual([{ product: notebook, quantity: 2, lineTotal: 2400 }]);
+
+    const removed = removeOneFromCart([staleLine], notebook.id);
+    expect(removed).toEqual([{ product: notebook, quantity: 1, lineTotal: 1200 }]);
+  });
 });
