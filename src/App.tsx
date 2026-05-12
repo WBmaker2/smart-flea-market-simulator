@@ -44,11 +44,17 @@ export default function App() {
 
   function handleAddProduct(product: Product) {
     const result = addProductToCart(cartLines, product, STARTING_BUDGET);
-    setCartLines(result.lines);
-    setNotice(result.accepted ? result.message : '예산 안에서 다시 골라 보세요.');
-    setWarning(result.accepted ? '' : result.message);
-    resetReflectionState();
-    setCheckedOut(false);
+    if (result.accepted) {
+      setCartLines(result.lines);
+      setNotice(result.message);
+      setWarning('');
+      resetReflectionState();
+      setCheckedOut(false);
+      return;
+    }
+
+    setNotice('예산 안에서 다시 골라 보세요.');
+    setWarning(result.message);
   }
 
   function handleRemoveOne(productId: string) {
@@ -111,7 +117,13 @@ export default function App() {
           reflectionReason={reflectionReason}
           reflectionTag={reflectionTag}
           presentationReady={presentationReady}
-          onReflectionReasonChange={setReflectionReason}
+          onReflectionReasonChange={(nextReason) => {
+            setReflectionReason(nextReason);
+
+            if (nextReason.trim().length === 0) {
+              setPresentationReady(false);
+            }
+          }}
           onReflectionTagChange={setReflectionTag}
           onPresentationReady={() => setPresentationReady(true)}
         />

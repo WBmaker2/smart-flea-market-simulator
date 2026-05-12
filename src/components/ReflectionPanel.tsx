@@ -57,6 +57,7 @@ export function ReflectionPanel({
               type="button"
               className={`tag-button ${reflectionTag === tag ? 'is-selected' : ''}`.trim()}
               onClick={() => onReflectionTagChange(tag)}
+              aria-pressed={reflectionTag === tag}
             >
               {tag}
             </button>
@@ -71,7 +72,7 @@ export function ReflectionPanel({
           발표 카드 만들기
         </button>
       </div>
-      {presentationReady ? (
+      {presentationReady && canMakePresentation ? (
         <section className="presentation-card" role="region" aria-label="발표 카드">
           <p>{reflectionTag}</p>
           <p>{reflectionReason}</p>

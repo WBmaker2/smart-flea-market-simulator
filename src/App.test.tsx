@@ -145,6 +145,7 @@ describe('Smart Flea Market Simulator', () => {
     expect(card).toHaveTextContent('절약 소비');
     expect(card).toHaveTextContent('공부에 필요한 물건을 먼저 골랐습니다.');
     expect(card).toHaveTextContent('남은 돈 7,300원');
+    expect(screen.getByRole('button', { name: '절약 소비' })).toHaveAttribute('aria-pressed', 'true');
 
     await user.click(
       screen.getByRole('button', { name: /물병 생활 필수 2,800원 담기/ })
@@ -156,7 +157,60 @@ describe('Smart Flea Market Simulator', () => {
     await user.click(screen.getByRole('button', { name: '결제하기' }));
 
     expect(screen.getByLabelText('선택 이유')).toHaveValue('');
-    expect(screen.getByRole('button', { name: '필수 소비' })).toHaveClass('is-selected');
+    expect(screen.getByRole('button', { name: '필수 소비' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: '발표 카드 만들기' })).toBeDisabled();
+  });
+
+  it('keeps the presentation card when adding an item over budget fails', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ }));
+    await user.click(screen.getByRole('button', { name: /미니 블록 놀이 선택 3,000원 담기/ }));
+    await user.click(screen.getByRole('button', { name: /과일 주스 간식 선택 1,000원 담기/ }));
+    await user.click(screen.getByRole('button', { name: /스티커북 놀이 선택 2,200원 담기/ }));
+    await user.click(screen.getByRole('button', { name: '결제하기' }));
+
+    await user.type(screen.getByLabelText('선택 이유'), '아무 이유나 적어봅니다.');
+    await user.click(screen.getByRole('button', { name: '절약 소비' }));
+    await user.click(screen.getByRole('button', { name: '발표 카드 만들기' }));
+
+    const cardBeforeFail = screen.getByRole('region', { name: '발표 카드' });
+    expect(cardBeforeFail).toBeInTheDocument();
+    expect(screen.getByLabelText('선택 이유')).toHaveValue('아무 이유나 적어봅니다.');
+    expect(screen.getByRole('button', { name: '발표 카드 만들기' })).not.toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: /물병 생활 필수 2,800원 담기/ }));
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      '예산이 부족해요! 합리적 소비를 위해 다시 고민해 볼까요?'
+    );
+    expect(screen.getByRole('region', { name: '발표 카드' })).toBeInTheDocument();
+    expect(screen.getByLabelText('선택 이유')).toHaveValue('아무 이유나 적어봅니다.');
+  });
+
+  it('hides the presentation card when reason is emptied or whitespace', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ }));
+    await user.click(screen.getByRole('button', { name: '결제하기' }));
+
+    await user.type(screen.getByLabelText('선택 이유'), '기록용 이유입니다.');
+    await user.click(screen.getByRole('button', { name: '발표 카드 만들기' }));
+    expect(screen.getByRole('region', { name: '발표 카드' })).toBeInTheDocument();
+
+    const reason = screen.getByLabelText('선택 이유');
+    await user.clear(reason);
+    await user.type(reason, '   ');
+
+    expect(screen.queryByRole('region', { name: '발표 카드' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '발표 카드 만들기' })).toBeDisabled();
   });
 });
