@@ -506,6 +506,59 @@ button:disabled {
   font-weight: 800;
 }
 
+.worksheet-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border: 2px solid #18212f;
+  border-radius: 8px;
+  background: #fffdf8;
+  display: grid;
+  gap: 14px;
+}
+
+.worksheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.worksheet-panel article {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.worksheet-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.worksheet-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed #c6baa1;
+  border-radius: 8px;
+  background: #fff8e8;
+}
+
+.worksheet-equation {
+  font-weight: 900;
+}
+
+.worksheet-lines span[aria-hidden='true'] {
+  display: block;
+  min-height: 82px;
+  border: 1px dashed #c6baa1;
+  border-radius: 8px;
+  background: #fff;
+}
+
 @media (max-width: 860px) {
   .app-shell {
     width: min(100% - 20px, 720px);
@@ -568,5 +621,45 @@ button:disabled {
 
   .cart-actions {
     grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .budget-bar,
+  .live-message,
+  .warning-message,
+  .mission-panel,
+  .market-layout,
+  .reflection-panel,
+  .teacher-guide-panel,
+  .print-action {
+    display: none !important;
+  }
+
+  body,
+  .app-shell {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  .worksheet-panel {
+    background: #fff;
+    border: none;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  .worksheet-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .worksheet-list,
+  .worksheet-lines span[aria-hidden='true'] {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

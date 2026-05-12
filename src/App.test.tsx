@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import App from './App';
 
 describe('Smart Flea Market Simulator', () => {
@@ -59,7 +59,7 @@ describe('Smart Flea Market Simulator', () => {
 
     await user.click(screen.getByRole('button', { name: '장바구니 비우기' }));
 
-    expect(screen.getByText('아직 고른 물건이 없어요.')).toBeInTheDocument();
+    expect(within(cart).getByText('아직 고른 물건이 없어요.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '결제하기' })).toBeDisabled();
     expect(screen.getByLabelText('남은 예산')).toHaveTextContent('10,000원');
   });
@@ -99,5 +99,28 @@ describe('Smart Flea Market Simulator', () => {
     expect(within(missionPanel).getByText('필수 물건 2개 이상').closest('li')).toHaveTextContent('달성');
     expect(within(missionPanel).getByText('3,000원 이상 남기기').closest('li')).toHaveTextContent('달성');
     expect(within(missionPanel).getByText('선택 물건 1개 이하').closest('li')).toHaveTextContent('달성');
+  });
+
+  it('renders a printable student worksheet and prints when requested', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(
+      screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ })
+    );
+
+    const worksheet = screen.getByRole('region', { name: '학생 활동지' });
+    expect(within(worksheet).getByText('내가 고른 물건')).toBeInTheDocument();
+    expect(within(worksheet).getByText('색연필 세트')).toBeInTheDocument();
+    expect(within(worksheet).getByText('공책 세트')).toBeInTheDocument();
+    expect(within(worksheet).getByText('10,000원 - 2,700원 = 7,300원')).toBeInTheDocument();
+
+    const printSpy = vi.spyOn(window, 'print').mockImplementation(() => undefined);
+    await user.click(within(worksheet).getByRole('button', { name: '활동지 인쇄' }));
+    expect(printSpy).toHaveBeenCalledTimes(1);
+    printSpy.mockRestore();
   });
 });
