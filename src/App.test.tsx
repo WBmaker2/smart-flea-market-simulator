@@ -123,4 +123,40 @@ describe('Smart Flea Market Simulator', () => {
     expect(printSpy).toHaveBeenCalledTimes(1);
     printSpy.mockRestore();
   });
+
+  it('creates a reflection presentation card with reason and clears it after cart changes', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ }));
+    await user.click(screen.getByRole('button', { name: '결제하기' }));
+
+    await user.type(
+      screen.getByLabelText('선택 이유'),
+      '공부에 필요한 물건을 먼저 골랐습니다.'
+    );
+    await user.click(screen.getByRole('button', { name: '절약 소비' }));
+    await user.click(screen.getByRole('button', { name: '발표 카드 만들기' }));
+
+    const card = screen.getByRole('region', { name: '발표 카드' });
+    expect(card).toHaveTextContent('절약 소비');
+    expect(card).toHaveTextContent('공부에 필요한 물건을 먼저 골랐습니다.');
+    expect(card).toHaveTextContent('남은 돈 7,300원');
+
+    await user.click(
+      screen.getByRole('button', { name: /물병 생활 필수 2,800원 담기/ })
+    );
+
+    expect(screen.queryByRole('region', { name: '발표 카드' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: '소비 선택 돌아보기' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: '결제하기' }));
+
+    expect(screen.getByLabelText('선택 이유')).toHaveValue('');
+    expect(screen.getByRole('button', { name: '필수 소비' })).toHaveClass('is-selected');
+    expect(screen.getByRole('button', { name: '발표 카드 만들기' })).toBeDisabled();
+  });
 });

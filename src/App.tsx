@@ -20,6 +20,11 @@ export default function App() {
   const [notice, setNotice] = useState('필요한 물건부터 골라 보세요.');
   const [warning, setWarning] = useState('');
   const [checkedOut, setCheckedOut] = useState(false);
+  const [reflectionReason, setReflectionReason] = useState('');
+  const [reflectionTag, setReflectionTag] = useState<'필수 소비' | '선택 소비' | '절약 소비'>(
+    '필수 소비'
+  );
+  const [presentationReady, setPresentationReady] = useState(false);
 
   const summary = useMemo(() => getCartSummary(cartLines, STARTING_BUDGET), [cartLines]);
   const missionStatuses = useMemo<Record<string, boolean>>(
@@ -31,11 +36,18 @@ export default function App() {
     [summary.needsCount, summary.remaining, summary.wantsCount]
   );
 
+  function resetReflectionState() {
+    setReflectionReason('');
+    setReflectionTag('필수 소비');
+    setPresentationReady(false);
+  }
+
   function handleAddProduct(product: Product) {
     const result = addProductToCart(cartLines, product, STARTING_BUDGET);
     setCartLines(result.lines);
     setNotice(result.accepted ? result.message : '예산 안에서 다시 골라 보세요.');
     setWarning(result.accepted ? '' : result.message);
+    resetReflectionState();
     setCheckedOut(false);
   }
 
@@ -44,6 +56,7 @@ export default function App() {
     setCartLines(nextLines);
     setNotice('장바구니 수량을 다시 계산했어요.');
     setWarning('');
+    resetReflectionState();
     setCheckedOut(false);
   }
 
@@ -51,6 +64,7 @@ export default function App() {
     setCartLines(clearCart(cartLines));
     setNotice('장바구니를 비웠어요.');
     setWarning('');
+    resetReflectionState();
     setCheckedOut(false);
   }
 
@@ -91,7 +105,17 @@ export default function App() {
 
       <WorksheetPanel summary={summary} />
 
-      {checkedOut ? <ReflectionPanel summary={summary} /> : null}
+      {checkedOut ? (
+        <ReflectionPanel
+          summary={summary}
+          reflectionReason={reflectionReason}
+          reflectionTag={reflectionTag}
+          presentationReady={presentationReady}
+          onReflectionReasonChange={setReflectionReason}
+          onReflectionTagChange={setReflectionTag}
+          onPresentationReady={() => setPresentationReady(true)}
+        />
+      ) : null}
     </main>
   );
 }
