@@ -7,6 +7,10 @@ coverage/
 /.vite/
 *.tsbuildinfo
 
+# browser QA artifacts
+.playwright-mcp/
+smart-flea-market-*.png
+
 # generated config artifacts from Vite/TS
 vite.config.js
 vite.config.d.ts

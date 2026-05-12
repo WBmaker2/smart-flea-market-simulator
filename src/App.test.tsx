@@ -78,4 +78,26 @@ describe('Smart Flea Market Simulator', () => {
     expect(within(reflection).getByText('필수 물건 1개, 선택 물건 1개를 골랐어요.')).toBeInTheDocument();
     expect(within(reflection).getByText('남은 돈은 7,700원이에요.')).toBeInTheDocument();
   });
+
+  it('shows mission cards and updates completion status after shopping', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const missionPanel = screen.getByRole('region', { name: '미션 카드' });
+    expect(within(missionPanel).getByText('필수 물건 2개 이상')).toBeInTheDocument();
+    expect(within(missionPanel).getByText('3,000원 이상 남기기')).toBeInTheDocument();
+    expect(within(missionPanel).getByText('선택 물건 1개 이하')).toBeInTheDocument();
+    expect(within(missionPanel).getByText('필수 물건 2개 이상').closest('li')).toHaveTextContent('도전 중');
+
+    await user.click(
+      screen.getByRole('button', { name: /색연필 세트 학용품 필수 1,500원 담기/ })
+    );
+    await user.click(
+      screen.getByRole('button', { name: /공책 세트 학용품 필수 1,200원 담기/ })
+    );
+
+    expect(within(missionPanel).getByText('필수 물건 2개 이상').closest('li')).toHaveTextContent('달성');
+    expect(within(missionPanel).getByText('3,000원 이상 남기기').closest('li')).toHaveTextContent('달성');
+    expect(within(missionPanel).getByText('선택 물건 1개 이하').closest('li')).toHaveTextContent('달성');
+  });
 });

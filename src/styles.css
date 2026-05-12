@@ -295,6 +295,87 @@ h2 {
   top: 16px;
 }
 
+.mission-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border: 2px solid #18212f;
+  border-radius: 8px;
+  background: #fffdf8;
+  display: grid;
+  gap: 12px;
+}
+
+.mission-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mission-card {
+  border: 2px solid #18212f;
+  border-radius: 8px;
+  background: #f8fffc;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mission-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.mission-title-row strong {
+  overflow-wrap: anywhere;
+}
+
+.mission-card p {
+  margin: 0;
+  color: #526070;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.mission-status {
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 900;
+  border: 1px solid #18212f;
+}
+
+.mission-status span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mission-card.is-complete {
+  background: #eef9f2;
+}
+
+.mission-status-complete {
+  background: #b8ebd4;
+  color: #084f3f;
+}
+
+.mission-status-in-progress {
+  background: #ffe8dc;
+  color: #8a320f;
+}
+
 .empty-cart {
   display: flex;
   align-items: center;
@@ -447,6 +528,10 @@ button:disabled {
     position: static;
   }
 
+  .mission-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .reflection-prompts {
     grid-template-columns: 1fr;
   }
@@ -461,6 +546,10 @@ button:disabled {
   }
 
   .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-list {
     grid-template-columns: 1fr;
   }
 

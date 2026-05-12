@@ -4,6 +4,7 @@ import { BudgetBar } from './components/BudgetBar';
 import { CartPanel } from './components/CartPanel';
 import { ProductGrid } from './components/ProductGrid';
 import { ReflectionPanel } from './components/ReflectionPanel';
+import { MissionPanel } from './components/MissionPanel';
 import { products, STARTING_BUDGET, type Product } from './data/products';
 import {
   addProductToCart,
@@ -20,6 +21,14 @@ export default function App() {
   const [checkedOut, setCheckedOut] = useState(false);
 
   const summary = useMemo(() => getCartSummary(cartLines, STARTING_BUDGET), [cartLines]);
+  const missionStatuses = useMemo<Record<string, boolean>>(
+    () => ({
+      essentials: summary.needsCount >= 2,
+      'save-3000': summary.remaining >= 3000,
+      'wants-limit': summary.wantsCount <= 1
+    }),
+    [summary.needsCount, summary.remaining, summary.wantsCount]
+  );
 
   function handleAddProduct(product: Product) {
     const result = addProductToCart(cartLines, product, STARTING_BUDGET);
@@ -64,6 +73,8 @@ export default function App() {
           {warning}
         </p>
       ) : null}
+
+      <MissionPanel completed={missionStatuses} />
 
       <div className="market-layout">
         <ProductGrid products={products} onAddProduct={handleAddProduct} />
