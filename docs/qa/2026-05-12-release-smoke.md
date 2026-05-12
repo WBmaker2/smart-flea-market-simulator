@@ -21,7 +21,7 @@
 ## GitHub Pages
 
 - Repository: `https://github.com/WBmaker2/smart-flea-market-simulator`
-- Workflow run: `https://github.com/WBmaker2/smart-flea-market-simulator/actions/runs/25724713493`
+- Workflow run: `https://github.com/WBmaker2/smart-flea-market-simulator/actions/runs/25724995474`
 - Workflow conclusion: `success`
 - Pages URL: `https://wbmaker2.github.io/smart-flea-market-simulator/`
 - Public HTML: `HTTP/2 200`
