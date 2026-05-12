@@ -213,4 +213,14 @@ describe('Smart Flea Market Simulator', () => {
     expect(screen.queryByRole('region', { name: '발표 카드' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '발표 카드 만들기' })).toBeDisabled();
   });
+
+  it('renders a classroom teacher guide with grade standards and time blocks', () => {
+    render(<App />);
+
+    const guide = screen.getByRole('region', { name: '교사용 수업안' });
+    expect(within(guide).getByText('20분 빠른 활동')).toBeInTheDocument();
+    expect(within(guide).getByText('40분 전체 수업')).toBeInTheDocument();
+    expect(within(guide).getByText('[4사07-02]')).toBeInTheDocument();
+    expect(within(guide).getByText('[4수01-04]')).toBeInTheDocument();
+  });
 });

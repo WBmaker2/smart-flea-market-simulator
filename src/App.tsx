@@ -6,6 +6,7 @@ import { ProductGrid } from './components/ProductGrid';
 import { ReflectionPanel } from './components/ReflectionPanel';
 import { MissionPanel } from './components/MissionPanel';
 import { WorksheetPanel } from './components/WorksheetPanel';
+import { TeacherGuidePanel } from './components/TeacherGuidePanel';
 import { products, STARTING_BUDGET, type Product } from './data/products';
 import {
   addProductToCart,
@@ -110,6 +111,7 @@ export default function App() {
       </div>
 
       <WorksheetPanel summary={summary} />
+      <TeacherGuidePanel />
 
       {checkedOut ? (
         <ReflectionPanel
