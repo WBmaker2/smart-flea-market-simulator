@@ -32,14 +32,33 @@
 ## HVC Status
 
 - Admin login page reached: `https://hongs-vibe-coding-lab.vercel.app/admin/login`
-- Registration status: pending admin password
-- Secret lookup checked without printing values:
-  - `/tmp/hvc_prod_env`: not found
-  - `/private/tmp/hvc_prod_env`: not found
-  - `HVC_ADMIN_PASSWORD`: empty
-  - `ADMIN_PASSWORD`: empty
-  - `HONGS_VIBE_CODING_LAB_ADMIN_PASSWORD`: empty
+- Registration status: completed
+- Admin card:
+  - Title: `왁자지껄 우리 반 알뜰 시장`
+  - Tags: `사회`, `수학`, `경제교육`, `화폐계산`, `합리적소비`
+  - Thumbnail mode: direct upload
+  - App count after save: `37개 앱`
+- Static gallery sync:
+  - HVC repo commit: `e3ad773 chore: sync smart flea market app card`
+  - DB apps: `37`
+  - Snapshot apps: `37`
+  - Missing/extra/mismatch counts: `0 / 0 / 0`
+  - Thumbnail stats: local `37`, remote `0`, null `0`
+- HVC production deploy:
+  - Deployment id: `dpl_5T3sbDeTnZGWpT2nyswwD7gdUSrD`
+  - Ready state: `READY`
+  - Public URL: `https://hongs-vibe-coding-lab.vercel.app/`
+  - Custom URL: `https://www.vibehong.shop/`
+- Public HVC browser verification:
+  - Card count: `37`
+  - New card visible: `왁자지껄 우리 반 알뜰 시장`
+  - App link: `https://wbmaker2.github.io/smart-flea-market-simulator/`
+  - Thumbnail: `/app-thumbnails/2c47b201-4941-4d74-a5b0-bb84d696e01c.png`
+  - Card images using `/app-thumbnails/`: `37`
+  - Card images using `/_next/image`: `0`
+  - Horizontal overflow: `0`
 
 ## Notes
 
 - GitHub Actions completed with a Node.js action runtime deprecation warning from GitHub-hosted actions. The deployment itself succeeded and the public page/assets returned `200`.
+- HVC admin authentication reused an active admin session, so the provided password was not entered or stored.
